@@ -8,9 +8,6 @@ import 'plugins'
 import App from 'views/App'
 
 export default () => {
-  require('styles/bootstrap')
-  require('styles/app')
-
   const store = createStore()
   const router = createRouter(store)
 

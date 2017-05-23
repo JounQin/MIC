@@ -1,3 +1,4 @@
+@require "~normalize.css"
 @require "iconfont"
 @require "transition"
 
@@ -47,75 +48,6 @@ input
   color $remark-color !important
   cursor not-allowed
 
-.btn
-  &.btn-hg
-    padding 11px 15px
-
-  &.btn-disabled-default,
-  &.btn-disabled-primary
-    border-color $remark-color
-
-  &.btn-disabled-default
-    color $remark-color
-
-  &.btn-disabled-primary
-    color $reverse-color
-    background-color $remark-color
-
-.input-group-addon
-  color $icon-color
-  background-color $back-light-color
-
-.form-control
-  height $input-size
-
-  &:not(:first-child)
-    border-left 0
-    padding-left 0
-
-  &:not(:last-child)
-    border-right 0
-
-.input-group-addon,
-.form-control
-  padding 6px 12px
-
-  &, &:focus
-    box-shadow none
-    border-color $input-border-color
-
-  &:first-child
-    padding-left 22px
-    border-radius $half-input-size 0 0 $half-input-size
-
-  &:last-child
-    border-radius 0 $half-input-size $half-input-size 0
-
-.input-group-primary
-  border 1px solid $input-border-color
-  border-radius $half-input-size
-  overflow hidden
-
-  .input-group-addon,
-  .form-control
-    border 0
-
-.has-error
-  .input-group-primary
-    border-color $highlight-color
-
-  .input-group-addon, .form-control
-    &, &:focus
-      border-color $highlight-color
-      background-color $back-light-color
-      box-shadow none
-
-  .input-group-addon
-    color $icon-color
-
-  .form-control-static
-    color $highlight-color
-
 .icon-character
   display inline-block
   line-height 1
@@ -131,18 +63,6 @@ input
 
 .remark-bg
   background-color $remark-color
-
-.panel-full
-  padding-left 10px
-  padding-right 10px
-  border-radius 0
-
-  .panel-heading
-    border-color $card-line-color
-
-  .panel-heading, .panel-body, .panel-footer
-    padding-left 0
-    padding-right 0
 
 .shadow-bottom
   box-shadow $bottom-shadow
@@ -171,7 +91,9 @@ input
 
 .dashed-line
   border-bottom 1px dashed $border-color
-  transform scaleY(.5)
+
+  @media (min-resolution 2dppx)
+    transform scaleY(.5)
 
 .list-group
   background-color $back-light-color

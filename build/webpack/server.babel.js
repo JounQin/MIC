@@ -5,11 +5,10 @@ import nodeExternals from 'webpack-node-externals'
 import _debug from 'debug'
 
 import config, {globals, paths} from '../config'
-import {nodeModules, baseLoaders, generateLoaders} from './utils'
 
-import baseConfig, {STYLUS_LOADER} from './base'
+import baseConfig from './base'
 
-const {__PROD__, NODE_ENV} = globals
+const {NODE_ENV} = globals
 
 const VUE_ENV = process.env.VUE_ENV = 'server'
 
@@ -22,20 +21,6 @@ export default {
   target: 'node',
   devtool: '#source-map',
   entry: [baseConfig.entry, paths.src('entry-server')],
-  module: {
-    rules: [
-      ...baseConfig.module.rules,
-      {
-        test: /[/\\](app|bootstrap)\.styl$/,
-        loader: __PROD__ ? 'null-loader' : generateLoaders(STYLUS_LOADER, baseLoaders),
-        exclude: nodeModules
-      }, {
-        test: /[/\\]theme-\w+\.styl$/,
-        loader: generateLoaders(STYLUS_LOADER, baseLoaders),
-        exclude: nodeModules
-      }
-    ]
-  },
   output: {
     ...baseConfig.output,
     filename: 'server-bundle.js',

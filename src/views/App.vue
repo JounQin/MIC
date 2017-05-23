@@ -31,3 +31,4 @@
     }
   }
 </script>
+<style src="styles/app.styl" lang="stylus"></style>

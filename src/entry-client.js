@@ -5,7 +5,7 @@ import {on} from 'utils'
 
 const {app, router, store} = createApp()
 
-if (window.__INITIAL_STATE__) {
+if (__PROD__ && window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
   delete window.__INITIAL_STATE__
 }
@@ -36,7 +36,8 @@ router.onReady(() => {
 
     try {
       activated.length && await Promise.all(activated.map(({asyncData}) => asyncData && asyncData({store, route: to})))
-    } catch (e) {}
+    } catch (e) {
+    }
 
     next()
   })

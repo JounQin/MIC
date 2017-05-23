@@ -1,15 +1,13 @@
 import webpack from 'webpack'
 import pug from 'pug'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
 import VueSSRClientPlugin from 'vue-server-renderer/client-plugin'
 import _debug from 'debug'
 
 import config, {globals, paths, pkg} from '../config'
-import {nodeModules, baseLoaders, generateLoaders} from './utils'
 
-import baseConfig, {STYLUS_LOADER, prodEmpty} from './base'
+import baseConfig from './base'
 
 const {devTool, minimize} = config
 
@@ -23,34 +21,10 @@ const debug = _debug('hi:webpack:client')
 
 debug(`create webpack configuration for NODE_ENV:${NODE_ENV}, VUE_ENV:${VUE_ENV}`)
 
-let appLoader, bootstrapLoader
-
 const clientConfig = {
   ...baseConfig,
   target: 'web',
   entry: [baseConfig.entry, paths.src('entry-client')],
-  module: {
-    rules: [
-      ...baseConfig.module.rules,
-      {
-        test: /[/\\]app\.styl$/,
-        loader: generateLoaders(STYLUS_LOADER, baseLoaders, {
-          extract: minimize && (appLoader = new ExtractTextPlugin(`${prodEmpty('app.')}[contenthash].css`))
-        }),
-        exclude: nodeModules
-      }, {
-        test: /[/\\]bootstrap\.styl$/,
-        loader: generateLoaders(STYLUS_LOADER, baseLoaders, {
-          extract: minimize && (bootstrapLoader = new ExtractTextPlugin(`${prodEmpty('bootstrap.')}[contenthash].css`))
-        }),
-        exclude: nodeModules
-      }, {
-        test: /[/\\]theme-\w+\.styl$/,
-        loader: generateLoaders(STYLUS_LOADER, baseLoaders),
-        exclude: nodeModules
-      }
-    ]
-  },
   plugins: [
     ...baseConfig.plugins,
     new webpack.DefinePlugin({
@@ -105,9 +79,7 @@ if (minimize) {
       },
       comments: false,
       sourceMap
-    }),
-    bootstrapLoader,
-    appLoader
+    })
   )
 }
 
@@ -119,8 +91,6 @@ if (__DEV__) {
     new webpack.NoEmitOnErrorsPlugin()
   )
 } else {
-  debug(`Extract styles of app and bootstrap for ${NODE_ENV}.`)
-
   debug(`Enable plugins for ${NODE_ENV} (SWPrecache).`)
   clientConfig.plugins.push(
     new SWPrecacheWebpackPlugin({

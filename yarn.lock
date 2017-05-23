@@ -1267,10 +1267,6 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap-styl@^5.0.8:
-  version "5.0.8"
-  resolved "http://registry.npm.taobao.org/bootstrap-styl/download/bootstrap-styl-5.0.8.tgz#3c601a7aa942ef7e70be9594f75a5dc6116f8f68"
-
 boxen@^0.6.0:
   version "0.6.0"
   resolved "http://registry.npm.taobao.org/boxen/download/boxen-0.6.0.tgz#8364d4248ac34ff0ef1b2f2bf49a6c60ce0d81b6"
@@ -4511,6 +4507,10 @@ normalize-url@^1.4.0:
     prepend-http "^1.0.0"
     query-string "^4.1.0"
     sort-keys "^1.0.0"
+
+normalize.css@^7.0.0:
+  version "7.0.0"
+  resolved "http://registry.npm.taobao.org/normalize.css/download/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
 
 npm-run-path@^2.0.0:
   version "2.0.2"

@@ -1,5 +1,7 @@
 import webpack from 'webpack'
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import _debug from 'debug'
 
 import config, {alias, globals, paths} from '../config'
 
@@ -13,7 +15,9 @@ import {
   generateLoaders
 } from './utils'
 
-const {__PROD__} = globals
+const debug = _debug('hi:webpack:base')
+
+const {__DEV__, __PROD__, NODE_ENV} = globals
 
 const PACKAGES = paths.base('packages')
 const NODE_MODULES = 'node_modules'
@@ -33,7 +37,7 @@ const urlLoader = `url-loader?${JSON.stringify({
   name: `${prodEmpty('[name].')}[hash].[ext]`
 })}`
 
-export default {
+const baseConfig = {
   resolve: {
     modules: [paths.src(), paths.src('components'), paths.src('views'), PACKAGES, NODE_MODULES],
     extensions: ['.vue', '.js', '.styl'],
@@ -59,7 +63,7 @@ export default {
         exclude: 'styl'
       }),
       {
-        test: /^(?!.*[/\\](app|bootstrap|theme-\w+)\.styl$).*\.styl$/,
+        test: /\.styl$/,
         loader: generateLoaders(STYLUS_LOADER, cssModuleLoaders),
         exclude: nodeModules
       },
@@ -78,6 +82,7 @@ export default {
         loader: 'vue-loader',
         options: {
           loaders: vueCssLoaders({
+            extract: !__DEV__,
             sourceMap
           }),
           cssModules: {
@@ -101,6 +106,7 @@ export default {
       minimize,
       stylus: {
         default: {
+          preferPathResolver: 'webpack',
           import: paths.src('styles/_variables.styl'),
           paths: paths.base('node_modules/bootstrap-styl')
         }
@@ -109,3 +115,11 @@ export default {
     new LodashModuleReplacementPlugin()
   ]
 }
+
+if (!__DEV__) {
+  debug(`Extract styles of app for ${NODE_ENV}.`)
+
+  baseConfig.plugins.push(new ExtractTextPlugin(`${prodEmpty('app.')}[${config.hashType}].css`))
+}
+
+export default baseConfig
