@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1495504287073'); /* IE9*/
-  src: url('iconfont.eot?t=1495504287073#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1495504287073') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1495504287073') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1495504287073#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1495521647936'); /* IE9*/
+  src: url('iconfont.eot?t=1495521647936#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1495521647936') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1495521647936') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1495521647936#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -14,4 +14,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.icon-menu:before { content: "\e745"; }
+
+.icon-search:before { content: "\e611"; }
+
+.icon-download:before { content: "\e84c"; }
 

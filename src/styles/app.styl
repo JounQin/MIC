@@ -7,6 +7,10 @@
   display none
   background transparent
 
+*
+  &, &:before, &:after
+    box-sizing border-box
+
 html
   font-size '16px'
 
@@ -25,6 +29,22 @@ body
   margin 0 auto
   scroll-behavior smooth
   -webkit-overflow-scrolling touch
+
+.pull-left
+  float left !important
+
+.pull-right
+  float right !important
+
+.clearfix
+  *zoom 1
+
+  &:before, &:after
+    content ''
+    display table
+
+  &:after
+    clear both
 
 .scroll
   scrollSmooth()
@@ -94,47 +114,6 @@ input
 
   @media (min-resolution 2dppx)
     transform scaleY(.5)
-
-.list-group
-  background-color $back-light-color
-  padding-left 0
-  @extend .border-tb
-
-  input, textarea
-    border 0
-    outline 0
-    resize none
-
-  textarea
-    display block
-    width 100%
-    padding 5px 0
-
-  .list-group-item
-    position relative
-    display block
-    margin-left 10px
-    padding 10px 10px 10px 0
-
-    &:not(:last-child)
-      @extend .border-b
-
-    .list-group-left, .list-group-right
-      display table-cell
-      vertical-align middle
-
-    .list-group-left
-      white-space nowrap
-      color $stress-color
-
-    .list-group-right
-      width 10000px
-
-      &, span
-        vertical-align middle
-
-      &, input
-        text-align right
 
 .fixed-bottom
   fixed()
