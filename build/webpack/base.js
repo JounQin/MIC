@@ -106,7 +106,6 @@ const baseConfig = {
       minimize,
       stylus: {
         default: {
-          preferPathResolver: 'webpack',
           import: paths.src('styles/_variables.styl'),
           paths: paths.base('node_modules/bootstrap-styl')
         }
