@@ -1,7 +1,20 @@
+import Vue from 'vue'
 import {throttle} from 'lodash'
 
 import createApp from './app'
 import {on} from 'utils'
+
+// a global mixin that calls `asyncData` when a route component's params change
+Vue.mixin({
+  async beforeRouteUpdate(to, from, next) {
+    const {asyncData} = this.$options
+    try {
+      asyncData && await asyncData({store: this.$store, route: to})
+    } catch (e) {
+    }
+    next()
+  }
+})
 
 const {app, router, store} = createApp()
 

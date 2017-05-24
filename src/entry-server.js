@@ -12,10 +12,14 @@ export default context => new Promise((resolve, reject) => {
 
     if (!matched.length) return reject({status: 404})
 
-    await Promise.all(matched.map(({asyncData}) => asyncData && asyncData({
-      store,
-      route: router.currentRoute
-    })))
+    try {
+      await Promise.all(matched.map(({asyncData}) => asyncData && asyncData({
+        store,
+        route: router.currentRoute
+      })))
+    } catch (e) {
+      return reject(e)
+    }
 
     __DEV__ && console.log(`data pre-fetch: ${Date.now() - start}ms`)
     context.state = store.state

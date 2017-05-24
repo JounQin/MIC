@@ -1,7 +1,17 @@
-<template lang="pug"></template>
+<template lang="pug">
+  mic-header
+</template>
 <script>
+  import MicHeader from './MicHeader'
+
   export default {
-    name: 'home'
+    name: 'home',
+    async asyncData({store}) {
+      await store.dispatch('fetchUser')
+    },
+    components: {
+      MicHeader
+    }
   }
 </script>
-<style lang="stylus" module></style>
+
