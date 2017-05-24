@@ -3,7 +3,7 @@ import {Random} from 'mockjs'
 
 const router = new Router({prefix: '/api'})
   .get('/fetch-user', async ctx => {
-    const cookies = ctx
+    const {cookies} = ctx
     const userId = cookies.get('userId')
     ctx.body = {
       userId,

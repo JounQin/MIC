@@ -18,10 +18,8 @@ Vue.mixin({
 
 const {app, router, store} = createApp()
 
-if (__PROD__ && window.__INITIAL_STATE__) {
-  store.replaceState(window.__INITIAL_STATE__)
-  delete window.__INITIAL_STATE__
-}
+window.__INITIAL_STATE__ && store.replaceState(window.__INITIAL_STATE__)
+__PROD__ && delete window.__INITIAL_STATE__
 
 if (__PROD__) require('vconsole')
 

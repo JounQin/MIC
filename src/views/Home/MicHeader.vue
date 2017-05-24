@@ -10,7 +10,7 @@
             div(:class="$style.menuHeader")
               template(v-if="userId")
                 router-link.active(to="/member") {{ userName }}
-                router-link(to="/logout") Sign Out
+                router-link.pull-right(to="/logout") Sign Out
               template(v-else)
                 router-link(to="/login") Sign In
                 router-link.pull-right(to="/register") Join Free

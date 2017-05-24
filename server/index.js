@@ -95,7 +95,7 @@ app.use(async (ctx, next) => {
 
   const start = Date.now()
 
-  const context = {url, title: 'Made-in-China.com'}
+  const context = {ctx, title: 'Made-in-China.com'}
 
   try {
     let stream
