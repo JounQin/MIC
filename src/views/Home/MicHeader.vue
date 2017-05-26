@@ -54,6 +54,7 @@
 </template>
 <script>
   import {mapActions, mapGetters} from 'vuex'
+  import {debounce} from 'lodash'
 
   import {on} from 'utils'
 
@@ -64,7 +65,9 @@
         searchActive: false,
         searchTypesActive: false,
         activeSearchType: 'products',
-        keyword: null
+        keyword: null,
+        suggestCache: {},
+        suggestions: null
       }
     },
     computed: {
@@ -73,7 +76,16 @@
     watch: {
       searchActive(searchActive) {
         this.toggleMask(searchActive)
-      }
+      },
+      keyword: debounce(function (keyword) {
+        keyword = keyword.trim()
+        if (!keyword) return
+        const {suggestCache} = this
+        this.suggestions = suggestCache[keyword] || (suggestCache[keyword] = (this.$http.get('/search-suggest', {
+          params:
+            {keyword}
+        })).data)
+      }, 500)
     },
     mounted() {
       on(document, 'click', () => {
@@ -167,6 +179,8 @@
 
       &:global(.icon-wrong)
         color $remark-color
+        width 1%
+        padding-right 5px
 
   .search-type
     width 1%
