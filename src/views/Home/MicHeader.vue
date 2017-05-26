@@ -32,7 +32,6 @@
                   router-link.iconfont.icon-pc(to="/pc") PC Site
     div(:class="$style.search")
       transition(:enter-class="$style.searchTypeEnter",
-      :leave-class="$style.searchTypeEnterLeave",
       :enter-active-class="$style.searchTypeEnterActive",
       :leave-active-class="$style.searchTypeLeaveActive",
       :leave-to-class="$style.searchTypeLeaveTo")
@@ -48,9 +47,16 @@
                 span.iconfont.icon-people
                 | Suppliers
                 span.iconfont.icon-correct.pull-right(v-if="activeSearchType === 'suppliers'")
-      input(placeholder="Search Products", autocomplete="off", @click.stop="searchActive = true; searchTypesActive = false", v-model="keyword", ref="search")
+      input(placeholder="Search Products", autocomplete="off", @focus="searchActive = true; searchTypesActive = false", @click.stop="", v-model="keyword", ref="search")
       span.iconfont.icon-wrong(v-if="keyword", @click.stop="keyword = null; $refs.search.focus()")
       span.iconfont.icon-search
+    transition-group.list-unstyled(tag="ul",
+    :class="$style.suggestions",
+    :enter-class="$style.suggestionEnter",
+    :enter-active-class="$style.suggestionEnterActive",
+    :leave-class="$style.suggestionLeave",
+    :leave-active-class="$style.suggestionLeaveActive")
+      li(v-for="(suggestion, index) of suggestions", :key="index") {{ suggestion }}
 </template>
 <script>
   import {mapActions, mapGetters} from 'vuex'
@@ -67,7 +73,8 @@
         activeSearchType: 'products',
         keyword: null,
         suggestCache: {},
-        suggestions: null
+        suggestions: [],
+        suggestionsCache: []
       }
     },
     computed: {
@@ -76,26 +83,44 @@
     watch: {
       searchActive(searchActive) {
         this.toggleMask(searchActive)
+        searchActive ? this.enterTimeout(this.suggestionsCache) : (this.suggestionsCache = [...this.suggestions])
       },
-      keyword: debounce(function (keyword) {
-        keyword = keyword.trim()
-        if (!keyword) return
-        const {suggestCache} = this
-        this.suggestions = suggestCache[keyword] || (suggestCache[keyword] = (this.$http.get('/search-suggest', {
-          params:
-            {keyword}
-        })).data)
-      }, 500)
+      keyword(keyword) {
+        keyword = keyword && keyword.trim()
+        keyword ? this.suggest(keyword) : this.leaveTimeout()
+      }
     },
     mounted() {
       on(document, 'click', () => {
         this.menuActive = false
         this.searchActive = false
         this.searchTypesActive = false
+        this.leaveTimeout()
       })
     },
     methods: {
-      ...mapActions(['toggleMask'])
+      ...mapActions(['toggleMask']),
+      suggest: debounce(async function (keyword) {
+        const {suggestCache} = this
+        let cache = suggestCache[keyword]
+        cache = cache || (suggestCache[keyword] = (await this.$http.get('/search-suggest', {
+          params: {keyword}
+        })).data)
+        this.enterTimeout(cache)
+      }, 500),
+      enterTimeout(cache) {
+        const length = this.suggestions.length
+        this.suggestions = cache.slice(0, length)
+        if (cache.length <= length) return
+        cache.forEach((suggestion, index) => {
+          index < length || setTimeout(() => this.suggestions.push(suggestion), 100 * (index - length))
+        })
+      },
+      leaveTimeout() {
+        const {suggestions} = this
+        if (!suggestions) return
+        suggestions.forEach((suggestion, index) => setTimeout(() => suggestions.splice(-1, 1), 50 * index))
+      }
     }
   }
 </script>
@@ -286,16 +311,15 @@
       transform translate3d(0, 5px, 0)
 
   .search-type-enter-active, .search-type-leave-active
-    transition padding-left .5s
+    transition all .3s
 
   .search-type-enter, .search-type-leave-active
     padding-left 0
 
-  .search-type-leave
+  .search-type-leave-active
     border-right 0
 
   .search-type-leave-to
-    border-right 0
     width 0
 
   .search-types
@@ -303,7 +327,7 @@
     top 30px
     font-size 0
 
-    $types-bg-color = rgba($split-line--darker-color, .88)
+    $types-bg-color = rgba($split-line-darker-color, .88)
 
     &:before
       content ''
@@ -326,7 +350,7 @@
         color $reverse-color
 
         + li
-          border-top 1px solid $split-line--darker-color
+          border-top 1px solid $split-line-darker-color
 
         span
           &:first-child
@@ -335,4 +359,22 @@
           &:before
             font-size 20px
             line-height 1
+
+  .suggestions
+    background-color $panel-bg-color
+    margin 10px -10px -10px
+    color $subtext-color
+
+    > li
+      padding 12px 18px
+
+      + li
+        border-top 1px solid $split-line-color
+
+  .suggestion-enter, .suggestion-leave-active
+    opacity 0
+    height 0
+
+  .suggestion-enter-active, .suggestion-leave-active
+    transition all .3s cubic-bezier(.05, .58, .25, 1)
 </style>

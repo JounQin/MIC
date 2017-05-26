@@ -35,7 +35,7 @@ const router = new Router({prefix: '/api'})
         call: JSONP_CALLBACK,
         param: encodeURIComponent(keyword)
       }
-    })) : []
+    })).map(({word}) => word) : []
   })
 
 export default app => app.use(router.routes()).use(router.allowedMethods())
