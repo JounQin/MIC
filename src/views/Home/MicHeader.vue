@@ -109,6 +109,7 @@
         this.enterTimeout(cache)
       }, 500),
       enterTimeout(cache) {
+        if (!this.keyword) return
         const length = this.suggestions.length
         this.suggestions = cache.slice(0, length)
         if (cache.length <= length) return
