@@ -1,15 +1,19 @@
-import axios from 'axios'
+import _axios from 'axios'
 
 import createApp from './app'
 
 export default context => new Promise((resolve, reject) => {
   const {ctx} = context
 
-  axios.defaults.headers = ctx.headers
-
   const start = __DEV__ && Date.now()
 
-  const {app, router, store} = createApp()
+  const axios = _axios.create()
+
+  context.axios = axios
+
+  axios.defaults.headers = ctx.headers
+
+  const {app, router, store} = createApp(axios)
 
   router.push(ctx.url)
 

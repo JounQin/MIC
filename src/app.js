@@ -7,8 +7,8 @@ import 'plugins'
 
 import App from 'views/App'
 
-export default () => {
-  const store = createStore()
+export default axios => {
+  const store = createStore(axios)
   const router = createRouter(store)
 
   const app = new Vue({

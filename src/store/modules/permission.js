@@ -1,10 +1,8 @@
-import axios from 'axios'
-
 import {generateGetters} from 'utils'
 
 const RESET_USER = 'RESET_USER'
 
-export default () => {
+export default axios => {
   const state = {
     userName: null,
     userId: null,

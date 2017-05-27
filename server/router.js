@@ -1,5 +1,5 @@
 import vm from 'vm'
-import _axios from 'axios'
+import axios from 'axios'
 import encoding from 'encoding'
 import Router from 'koa-router'
 import {Random} from 'mockjs'
@@ -8,12 +8,6 @@ const JSONP_CALLBACK = 'jsonpCallback'
 
 const parseJsonp = ({data}, convert) =>
   vm.runInNewContext(`const ${JSONP_CALLBACK} = v => v; ${convert ? encoding.convert(data, 'utf8', 'gbk') : data}`)
-
-const axios = _axios.create({
-  headers: {
-    Host: null
-  }
-})
 
 const LINK_PREFIX = 'https://m.made-in-china.com/special/'
 

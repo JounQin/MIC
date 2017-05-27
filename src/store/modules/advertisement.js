@@ -1,10 +1,8 @@
-import axios from 'axios'
-
 import {generateGetters} from 'utils'
 
 const SET_BANNERS = 'SET_BANNERS'
 
-export default () => {
+export default axios => {
   const state = {
     banners: null
   }
