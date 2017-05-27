@@ -47,7 +47,7 @@
                 span.iconfont.icon-people
                 | Suppliers
                 span.iconfont.icon-correct.pull-right(v-if="activeSearchType === 'suppliers'")
-      input(placeholder="Search Products", autocomplete="off", @focus="searchActive = true; searchTypesActive = false", @click.stop="", v-model="keyword", ref="search")
+      input(placeholder="Search Products", autocomplete="off", @focus="searchActive = true; searchTypesActive = false", @keyup.esc="$refs.search.blur();searchBlur();", @click.stop="", v-model="keyword", ref="search")
       span.iconfont.icon-wrong(v-if="keyword", @click.stop="keyword = null; $refs.search.focus()")
       span.iconfont.icon-search
     transition-group.list-unstyled(tag="ul",
@@ -91,12 +91,7 @@
       }
     },
     mounted() {
-      on(document, 'click', () => {
-        this.menuActive = false
-        this.searchActive = false
-        this.searchTypesActive = false
-        this.leaveTimeout()
-      })
+      on(document, 'click', () => this.searchBlur())
     },
     methods: {
       ...mapActions(['toggleMask']),
@@ -121,6 +116,12 @@
         const {suggestions} = this
         if (!suggestions) return
         suggestions.forEach((suggestion, index) => setTimeout(() => suggestions.splice(-1, 1), 50 * index))
+      },
+      searchBlur() {
+        this.menuActive = false
+        this.searchActive = false
+        this.searchTypesActive = false
+        this.leaveTimeout()
       }
     }
   }

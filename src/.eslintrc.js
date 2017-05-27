@@ -9,6 +9,7 @@ module.exports = {
     __SERVER__: false,
     SERVER_PREFIX: false,
     INNER_SERVER: false,
+    IMG_PATH_PREFIX: false,
     NON_INDEX_REGEX: false
   },
   rules: {

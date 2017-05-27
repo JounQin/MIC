@@ -15,6 +15,8 @@ const axios = _axios.create({
   }
 })
 
+const LINK_PREFIX = 'https://m.made-in-china.com/special/'
+
 const router = new Router({prefix: '/api'})
   .get('/fetch-user', async ctx => {
     const {cookies} = ctx
@@ -36,6 +38,24 @@ const router = new Router({prefix: '/api'})
         param: encodeURIComponent(keyword)
       }
     })).map(({word}) => word) : []
+  })
+  .get('/fetch-banners', async ctx => {
+    ctx.body = [{
+      link: 'happy-children-s-day',
+      img: '8f4j00dvsQYupaJDio/made-in-china.jpg'
+    }, {
+      link: 'new-star-products',
+      img: '8f4j00DBvtbdgqbLVp/made-in-china.jpg'
+    }, {
+      link: 'green-furnishing',
+      img: '8f4j00bCZaKpVMrDWn/made-in-china.jpg'
+    }, {
+      link: 'outdoor-vehicle',
+      img: '8f4j00bMSEIzidZPhV/made-in-china.jpg'
+    }].map(banner => {
+      banner.link = LINK_PREFIX + banner.link
+      return banner
+    })
   })
 
 export default app => app.use(router.routes()).use(router.allowedMethods())
