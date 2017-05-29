@@ -15,6 +15,9 @@ const DEFAULT_OPTIONS = {
   enable: true
 }
 
+const MOUSE_EVENT_PROPS = ['altKey', 'button', 'buttons', 'clientX', 'clientY', 'ctrlKey', 'metaKey',
+  'movementX', 'movementY', 'region', 'relatedTarget', 'screenX', 'screenY', 'shiftKey', 'which']
+
 const actualEvent = (e, prevent, stop) => {
   prevent && e.preventDefault()
   stop && e.stopPropagation()
@@ -23,15 +26,6 @@ const actualEvent = (e, prevent, stop) => {
     event: touches ? touches[0] : e,
     support: !!touches
   }
-}
-
-const findLinkNode = (el, {target}) => {
-  let node = target
-  do {
-    if (node.tagName.toLowerCase() === 'a') return node
-    if (node === el) return
-    node = node.parentNode
-  } while (node !== el)
 }
 
 function init(el, {value, modifiers: {prevent, stop}}) {
@@ -162,35 +156,27 @@ function init(el, {value, modifiers: {prevent, stop}}) {
 
         if (isPrevent(tapEvent, endEvent)) return
 
-        const link = isSingle && findLinkNode(el, e)
-
-        let _click
-
-        if (link) {
-          _click = link._click = true
-          link.click()
-        }
-
         const eventInit = {
           bubbles: true,
           cancelable: true,
-          cancelBubble: true
+          cancelBubble: true,
+          ...MOUSE_EVENT_PROPS.reduce((event, prop) => {
+            event[prop] = e[prop]
+            return event
+          }, {})
         }
 
         const prefix = isSingle ? '' : 'dbl'
 
-        if (actual.support && (!isSingle || !_click)) {
-          const clickEv = new Event(`${prefix}click`, eventInit)
-          const {target} = e
-          target.dispatchEvent(clickEv)
-          if (clickEv.returnValue === false) return
-        }
+        const clickEv = new MouseEvent(`${prefix}click`, eventInit)
+        clickEv._click = isSingle
 
-        const tapEv = new Event(`${prefix}tap`, eventInit)
+        const {target} = e
+        if (target.dispatchEvent(clickEv) === false || clickEv.returnValue === false) return
 
-        e.target.dispatchEvent(tapEv)
+        const tapEv = new MouseEvent(`${prefix}tap`, eventInit)
 
-        if (tapEv.returnValue === false) return
+        if (e.target.dispatchEvent(tapEv) === false || tapEv.returnValue === false) return
       } else if (isPrevent(mltTap, Object.assign(endEvent, {tapped}))) return
       isPrevent(end, endEvent)
     }, 200)
@@ -226,15 +212,17 @@ function init(el, {value, modifiers: {prevent, stop}}) {
     el._interval = setInterval(() => el._startTime ? isPrevent(pressing, wrappedEvent) : removeInterval(), 200)
   }
 
+  el.eClick = e => {
+    if (e._click) return delete e._click
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
   on(el, {
     [EVENTS.start]: el.eStart,
     [EVENTS.move]: el.eMove,
     [EVENTS.end]: el.eEnd,
-    click(e) {
-      const link = findLinkNode(el, e)
-      if (!link) return
-      link._click ? (delete link._click) : e.preventDefault()
-    }
+    click: el.eClick
   })
 }
 
@@ -242,7 +230,8 @@ function destroy(el) {
   off(el, {
     [EVENTS.start]: el.eStart,
     [EVENTS.move]: el.eMove,
-    [EVENTS.end]: el.eEnd
+    [EVENTS.end]: el.eEnd,
+    click: el.eClick
   })
 }
 
