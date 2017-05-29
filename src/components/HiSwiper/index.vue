@@ -1,11 +1,9 @@
 <template lang="pug">
-  div(:class="$style.container")
+  div(:class="$style.container", v-touch="{methods: true}")
     ol.list-unstyled(:class="$style.list", :style="{transform}")
       slot
 </template>
 <script>
-  import {on} from 'utils'
-
   export default {
     name: 'HiSwiper',
     data() {
@@ -19,18 +17,23 @@
         return `translate3d(${this.translateX}px,0,0)`
       }
     },
-    mounted() {
-      on(this.$el, 'scroll', e => {
-        console.log('scrolling')
-      })
+    methods: {
+      moveStart() {
+        this.translateStart = this.translateX
+      },
+      moving(e) {
+        this.translateX = this.translateStart + e.changedX
+      },
+      moveEnd() {
+
+      }
     }
   }
 </script>
 <style lang="stylus" module>
   .container
     max-width 100%
-    overflow-x auto
-    overflow-y hidden
+    overflow hidden
 
   .list
     font-size 0

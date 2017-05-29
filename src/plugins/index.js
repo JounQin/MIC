@@ -1,4 +1,5 @@
 import './http'
 import './components'
+import './directives'
 import './filters'
 import './mixins'

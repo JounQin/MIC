@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import {pick, omit} from 'lodash'
+import {pick, omit} from 'utils'
 
 const RouterLink = Vue.component('router-link')
 

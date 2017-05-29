@@ -1,4 +1,6 @@
-import {each} from 'lodash'
+import {isObject} from 'lodash'
+
+import {each} from './common'
 
 export const domEach = (el, ...args) => each(Array.isArray(el) || el instanceof NodeList ? el : [el], ...args)
 
@@ -15,12 +17,15 @@ export const addClass = (el, className) => domEach(el, el => {
 export const removeClass = (el, className) =>
   domEach(el, el => (el.className = el.className.replace(classRegExp(className), ' ').trim()))
 
-export const on = (el, events, handler, useCapture = false) =>
-  domEach(el, el => events.trim().split(' ').forEach(event => el.addEventListener(event, handler, useCapture)))
+export const on = (el, events, handler, options = false) => {
+  if (isObject(events)) return each(events, (value, key) => on(el, key, value, handler))
+  domEach(el, el => events.trim().split(' ').forEach(event => el.addEventListener(event, handler, options)))
+}
 
-export const off = (el, events, handler, useCapture = false) =>
-  domEach(el, el => events.trim().split(' ').forEach(event => el.removeEventListener(event, handler, useCapture)))
-
+export const off = (el, events, handler, options = false) => {
+  if (isObject(events)) return each(events, (value, key) => off(el, key, value, handler))
+  domEach(el, el => events.trim().split(' ').forEach(event => el.removeEventListener(event, handler, options)))
+}
 /**
  * 用于处理事件可能不触发的情况，或者考虑事件兼容性问题
  *
