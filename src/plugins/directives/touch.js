@@ -162,10 +162,12 @@ function init(el, {value, modifiers: {prevent, stop}}) {
 
         if (isPrevent(tapEvent, endEvent)) return
 
-        const link = findLinkNode(el, e)
+        const link = isSingle && findLinkNode(el, e)
+
+        let _click
 
         if (link) {
-          link._click = true
+          _click = link._click = true
           link.click()
         }
 
@@ -177,14 +179,18 @@ function init(el, {value, modifiers: {prevent, stop}}) {
 
         const prefix = isSingle ? '' : 'dbl'
 
-        if (actual.support) {
-          const clickEvent = new Event(`${prefix}click`, eventInit)
+        if (actual.support && (!isSingle || !_click)) {
+          const clickEv = new Event(`${prefix}click`, eventInit)
           const {target} = e
-          target.dispatchEvent(clickEvent)
-          if (clickEvent.returnValue === false) return
+          target.dispatchEvent(clickEv)
+          if (clickEv.returnValue === false) return
         }
 
-        if (e.target.dispatchEvent(new Event(`${prefix}tap`, eventInit)) === false) return
+        const tapEv = new Event(`${prefix}tap`, eventInit)
+
+        e.target.dispatchEvent(tapEv)
+
+        if (tapEv.returnValue === false) return
       } else if (isPrevent(mltTap, Object.assign(endEvent, {tapped}))) return
       isPrevent(end, endEvent)
     }, 200)
