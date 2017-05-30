@@ -2,9 +2,9 @@
   div(:class="$style.container", v-touch="{methods: true}")
     ol.list-unstyled(:class="[$style.list, {[$style.transition]: transition}]",
     :style="{transform}", ref="list", @transitionend="transitionEnd")
-      li(v-if="firstItem", v-html="firstItem")
+      li(v-if="lastItem", :class="Array.from(lastItem.classList)", v-html="lastItem.innerHTML")
       slot
-      li(v-if="lastItem", v-html="lastItem")
+      li(v-if="firstItem", :class="Array.from(firstItem.classList)", v-html="firstItem.innerHTML")
 </template>
 <script>
   import {intervalVal} from 'utils'
@@ -56,8 +56,8 @@
 
       if (!infinity) return
 
-      this.firstItem = children[size - 1].innerHTML
-      this.lastItem = children[0].innerHTML
+      this.firstItem = children[0]
+      this.lastItem = children[size - 1]
     },
     methods: {
       resetTranslateX() {
