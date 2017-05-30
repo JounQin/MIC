@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     mic-header
-    hi-swiper
+    hi-swiper(:infinity="true")
       li(v-for="{link, img} of banners")
         router-link(:to="link")
           img.img-full(:src="img | imgPath")
