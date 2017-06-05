@@ -168,5 +168,7 @@ const {serverHost, serverPort} = config
 
 const args = [serverPort, serverHost]
 
-app.listen(...args, err =>
-  debug(...err ? [err] : ['Server is now running at %s:%s.', ...args.reverse()]))
+const server = app.listen(...args, err => {
+  server.keepAliveTimeout = 0
+  debug(...err ? [err] : ['Server is now running at %s:%s.', ...args.reverse()])
+})
