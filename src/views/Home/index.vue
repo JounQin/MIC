@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     mic-header
-    hi-swiper(:infinity="true", :autoInterval="2000")
+    hi-swiper(:class="$style.banners", :infinity="true", :autoInterval="2000")
       li(v-for="{link, img} of banners")
         router-link(:to="link")
           img.img-full(:src="img | imgPath")
@@ -27,3 +27,7 @@
     }
   }
 </script>
+<style lang="stylus" module>
+  .banners img
+    width 100%
+</style>
