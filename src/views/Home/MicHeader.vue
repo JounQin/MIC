@@ -363,6 +363,8 @@
             line-height 1
 
   .suggestions
+    absolute()
+    width 100%
     background-color $panel-bg-color
     margin 10px -10px -10px
     color $subtext-color

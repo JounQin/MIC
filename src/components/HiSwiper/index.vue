@@ -19,6 +19,12 @@
       threshold: {
         type: Number,
         default: 20
+      },
+      autoInterval: {
+        type: Number,
+        validator(val) {
+          return !val || val >= 1500
+        }
       }
     },
     data() {
@@ -30,7 +36,8 @@
         width: 0,
         size: 0,
         firstItem: null,
-        lastItem: null
+        lastItem: null,
+        autoTimeout: null
       }
     },
     computed: {
@@ -41,12 +48,16 @@
         return -this.index * this.width
       }
     },
+    watch: {
+      index() {
+        this.resetTranslateX()
+      }
+    },
     mounted() {
       const {infinity} = this
       const {list} = this.$refs
       this.index = +infinity
       this.width = list.clientWidth
-      this.resetTranslateX()
 
       const {children} = list
 
@@ -54,10 +65,12 @@
 
       this.size = infinity ? size + 2 : size
 
-      if (!infinity) return
+      if (infinity) {
+        this.firstItem = children[0]
+        this.lastItem = children[size - 1]
+      }
 
-      this.firstItem = children[0]
-      this.lastItem = children[size - 1]
+      this.autoPlay(this.index + 1)
     },
     methods: {
       resetTranslateX() {
@@ -66,6 +79,7 @@
       moveStart() {
         this.transition = false
         this.translateStart = this.translateX
+        clearTimeout(this.autoTimeout)
       },
       moving(e) {
         this.translateX = this.translateStart + e.changedX
@@ -83,25 +97,34 @@
           index--
         }
 
-        this.index = intervalVal(0, this.size - 1, index)
         this.transition = true
+        this.index = intervalVal(0, this.size - 1, index)
         this.resetTranslateX()
       },
       transitionEnd() {
         this.transition = false
 
-        if (!this.infinity) return
-
         let {index, size} = this
+
+        const isLast = index === size - 1
+
+        if (!this.infinity) return this.autoPlay(isLast ? 0 : index + 1)
 
         if (!index) {
           index = size - 2
-        } else if (index === size - 1) {
+        } else if (isLast) {
           index = 1
         }
 
         this.index = index
-        this.resetTranslateX()
+        this.autoPlay(index + 1)
+      },
+      autoPlay(index) {
+        if (!this.autoInterval) return
+        this.autoTimeout = setTimeout(() => {
+          this.transition = true
+          this.index = index
+        }, this.autoInterval)
       }
     }
   }
