@@ -19,7 +19,7 @@
     "lint": "npm run lint:es",
     "lint:fix": "npm run lint:es -- --fix",
     "lint:es": "eslint --ext .js,.vue --max-warnings 10 .",
-    "pm2": "cross-env NODE_ENV=production HOST=localhost PORT=6000 DEBUG=hi:* pm2 start build/bin/start.js --name=mic",
+    "pm2": "cross-env NODE_ENV=production PORT=6000 DEBUG=hi:* pm2 start build/bin/start.js --name=mic",
     "deploy": "bash build/bash/deploy.sh"
   },
   "dependencies": {
