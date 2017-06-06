@@ -7,7 +7,9 @@
       li(v-if="firstItem", :class="Array.from(firstItem.classList)", v-html="firstItem.innerHTML")
 </template>
 <script>
-  import {intervalVal} from 'utils'
+  import {throttle} from 'lodash'
+
+  import {intervalVal, on, off} from 'utils'
 
   export default {
     name: 'HiSwiper',
@@ -57,7 +59,13 @@
       const {infinity} = this
       const {list} = this.$refs
       this.index = +infinity
-      this.width = list.clientWidth
+
+      on(window, 'resize', this.resize = throttle(() => {
+        this.width = list.clientWidth
+        this.resetTranslateX()
+      }), 300)
+
+      this.resize()
 
       const {children} = list
 
@@ -71,6 +79,10 @@
       }
 
       this.autoPlay(this.index + 1)
+    },
+    destroyed() {
+      off(window, 'resize', this.resize)
+      this.resize = null
     },
     methods: {
       resetTranslateX() {
