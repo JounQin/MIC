@@ -5,8 +5,8 @@
       li(v-if="lastItem", :class="Array.from(lastItem.classList)", v-html="lastItem.innerHTML")
       slot
       li(v-if="firstItem", :class="Array.from(firstItem.classList)", v-html="firstItem.innerHTML")
-    ul.list-unstyled(:class="$style.lineControls")
-      li(v-for="i in realSize", :class="{[$style.current]: currIndex === i - 1}", :style="{width: 100 / (infinity ? size - 2 : size) + '%'}")
+    ul.list-unstyled(:class="$style.lineControl")
+      li(v-for="i in realSize", :class="{[$style.current]: controlIndex === i - 1}", :style="{width: 100 / (infinity ? size - 2 : size) + '%'}")
 </template>
 <script>
   import {throttle} from 'lodash'
@@ -52,10 +52,11 @@
       indexTranslateX() {
         return -this.index * this.width
       },
-      currIndex() {
+      controlIndex() {
         const {index} = this
         if (!this.infinity) return index
-        return index === this.size - 1 ? 0 : index - 1
+        const {size} = this
+        return index ? index === size - 1 ? 0 : index - 1 : size - 3
       }
     },
     watch: {
@@ -166,7 +167,7 @@
       display inline-block
       width 100%
 
-  .line-controls
+  .line-control
     font-size 0
     background-color $back-color
 
