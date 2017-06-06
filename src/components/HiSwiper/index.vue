@@ -5,13 +5,15 @@
       li(v-if="lastItem", :class="Array.from(lastItem.classList)", v-html="lastItem.innerHTML")
       slot
       li(v-if="firstItem", :class="Array.from(firstItem.classList)", v-html="firstItem.innerHTML")
-    ul.list-unstyled(:class="$style.lineControl")
-      li(v-for="i in realSize", :class="{[$style.current]: controlIndex === i - 1}", :style="{width: 100 / (infinity ? size - 2 : size) + '%'}")
+    ol.list-unstyled(v-if="controlType !== 'none'", :class="$style[`${controlType}Control`]")
+      li(v-for="i in realSize", :class="{[$style.current]: controlIndex === i - 1}", :style="{width: controlType === 'line' && (100 / (infinity ? size - 2 : size) + '%')}")
 </template>
 <script>
   import {throttle} from 'lodash'
 
   import {intervalVal, on, off} from 'utils'
+
+  const CONTROL_TYPES = ['none', 'line', 'point']
 
   export default {
     name: 'HiSwiper',
@@ -26,9 +28,12 @@
       },
       autoInterval: {
         type: Number,
-        validator(val) {
-          return !val || val >= 1500
-        }
+        validator: val => !val || val >= 1500
+      },
+      controlType: {
+        type: String,
+        default: CONTROL_TYPES[0],
+        validator: val => CONTROL_TYPES.includes(val)
       }
     },
     data() {
@@ -167,14 +172,30 @@
       display inline-block
       width 100%
 
-  .line-control
+  .line-control, .point-control
     font-size 0
-    background-color $back-color
 
     > li
       display inline-block
-      height 2px
 
       &.current
         background-color $highlight-color
+
+  .line-control
+    background-color $back-color
+
+    > li
+      height 2px
+
+  .point-control
+    text-align center
+    margin-bottom 8px
+
+    > li
+      size 7px
+      border-radius 50%
+      background-color $remark-lighter-color
+
+      + li
+        margin-left 8px
 </style>
