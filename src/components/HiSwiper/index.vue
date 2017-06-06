@@ -6,7 +6,7 @@
       slot
       li(v-if="firstItem", :class="Array.from(firstItem.classList)", v-html="firstItem.innerHTML")
     ol.list-unstyled(v-if="controlType !== 'none'", :class="$style[`${controlType}Control`]")
-      li(v-for="i in realSize", :class="{[$style.current]: controlIndex === i - 1}", :style="{width: controlType === 'line' && (100 / (infinity ? size - 2 : size) + '%')}")
+      li(v-for="i in actualSize", :class="{[$style.current]: controlIndex === i - 1}", :style="controlType === 'line' && {width: 100 / (infinity ? size - 2 : size) + '%'}")
 </template>
 <script>
   import {throttle} from 'lodash'
@@ -16,7 +16,7 @@
   const CONTROL_TYPES = ['none', 'line', 'point']
 
   export default {
-    name: 'HiSwiper',
+    name: 'hi-swiper',
     props: {
       infinity: {
         type: Boolean,
@@ -44,7 +44,7 @@
         index: 0,
         width: 0,
         size: 0,
-        realSize: 0,
+        actualSize: 0,
         firstItem: null,
         lastItem: null,
         autoTimeout: null
@@ -69,28 +69,25 @@
         this.resetTranslateX()
       }
     },
-    mounted() {
+    created() {
       const {infinity} = this
-      const {list} = this.$refs
       this.index = +infinity
+      const size = this.actualSize = this.$slots.default.length
+      this.size = infinity ? size + 2 : size
+    },
+    mounted() {
+      const {list} = this.$refs
 
       on(window, 'resize', this.resize = throttle(() => {
         this.width = list.clientWidth
         this.resetTranslateX()
-      }), 300)
+      }, 300))
 
       this.resize()
 
-      const {children} = list
-
-      const size = children.length
-
-      this.realSize = size
-      this.size = infinity ? size + 2 : size
-
-      if (infinity) {
-        this.firstItem = children[0]
-        this.lastItem = children[size - 1]
+      if (this.infinity) {
+        this.firstItem = list.children[0]
+        this.lastItem = list.children[this.actualSize - 1]
       }
 
       this.autoPlay(this.index + 1)
