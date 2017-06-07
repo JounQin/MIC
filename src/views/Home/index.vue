@@ -5,7 +5,7 @@
       li(v-for="{link, img} of banners")
         router-link(:to="link")
           img.img-full(:src="img | imgPath")
-    hi-swiper.light-bg(controlType="point")
+    hi-swiper.light-bg( :infinity="true", controlType="point")
       li
         ul.list-unstyled.clearfix(:class="$style.categories")
           li
@@ -75,6 +75,7 @@
 <style lang="stylus" module>
   .banners img
     width 100%
+    min-height 150px
 
   .categories > li
     display inline-block

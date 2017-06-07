@@ -6,7 +6,10 @@
       slot
       li(v-if="firstItem", :class="Array.from(firstItem.classList)", v-html="firstItem.innerHTML")
     ol.list-unstyled(v-if="controlType !== 'none'", :class="$style[`${controlType}Control`]")
-      li(v-for="i in actualSize", :class="{[$style.current]: controlIndex === i - 1}", :style="controlType === 'line' && {width: 100 / (infinity ? size - 2 : size) + '%'}")
+      li(v-for="i in actualSize",
+      :class="{[$style.current]: controlIndex === i - 1}",
+      :style="controlType === 'line' && {width: 100 / (infinity ? size - 2 : size) + '%'}",
+      @click="toggleControlIndex(i - 1 + +infinity)")
 </template>
 <script>
   import {throttle} from 'lodash'
@@ -149,6 +152,12 @@
           this.transition = true
           this.index = index
         }, this.autoInterval)
+      },
+      toggleControlIndex(index) {
+        if (this.index === index) return
+        clearTimeout(this.autoTimeout);
+        this.transition = true;
+        this.index = index
       }
     }
   }

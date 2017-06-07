@@ -134,7 +134,7 @@
     z-index 101
 
     nav
-      margin-bottom 15px
+      margin-bottom 10px
       transition margin-top .5s
 
       &:global(.active)
@@ -161,7 +161,7 @@
 
       &:last-child
         relative()
-        margin-left 10px
+        margin-left 20px
         margin-right 3px
 
         &:global(.active):after
@@ -187,6 +187,7 @@
       font-size $common-size
       padding 7px 10px
       background-color transparent
+      vertical-align middle
 
     > span
       display table-cell
@@ -210,9 +211,9 @@
         padding-right 5px
 
   .search-type
+    relative()
     width 1%
     max-width 0
-    relative()
     border-right 1px solid $split-line-color
     overflow hidden
     padding-left 52px
@@ -328,6 +329,7 @@
     absolute(left)
     top 30px
     font-size 0
+    z-index 1
 
     $types-bg-color = rgba($split-line-darker-color, .88)
 
