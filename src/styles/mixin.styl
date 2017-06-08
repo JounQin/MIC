@@ -166,3 +166,13 @@ placeholder()
           pair()
         else if pair is not null && pair[0] is not null
           {pair[0]}: type(pair[1]) == 'string' ? s(pair[1]) : pair[1]
+
+line-clamp($line)
+  display -webkit-box
+  white-space pre-wrap
+  word-wrap break-word
+  overflow hidden
+  text-overflow ellipsis
+  -webkit-line-clamp $line
+  -webkit-box-orient vertical
+  -webkit-box-pack center

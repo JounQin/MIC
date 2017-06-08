@@ -153,7 +153,6 @@
 
     > :global(.iconfont)
       line-height 1
-      transform none
       cursor pointer
 
       &:before

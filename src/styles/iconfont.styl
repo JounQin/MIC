@@ -1,9 +1,17 @@
 @require "iconfont/iconfont.css"
 
-.iconfont:before
-  relative()
-  display inline-block
+.iconfont
   font-size $common-size
-  transform scale(16 / 14)
-  padding-left 1px
-  padding-right 1px
+
+  &.icon-arrow-up, &.icon-arrow-bottom, &.icon-arrow-left
+    &:before
+      content '\e622'
+
+  &.icon-arrow-up:before
+    transform rotate(-90deg)
+
+  &.icon-arrow-bottom:before
+    transform rotate(90deg)
+
+  &.icon-arrow-left:before
+    transform rotate(180deg)

@@ -13,9 +13,7 @@
             div All Categories
           li
             span.iconfont.icon-package(:style="{backgroundColor: '#f3aa28'}")
-            div Packaging
-              br
-              | & Printing
+            div Packaging & Printing
           li
             span.iconfont.icon-pot(:style="{backgroundColor: '#7ace57'}")
             div Light Industry & Daily Use
@@ -50,6 +48,23 @@
           li
             span.iconfont.icon-wheel(:style="{backgroundColor: '#29a8e1'}")
             div Auto, Motorcycle Parts & Accessories
+    div(:class="$style.request")
+      h5 Post One Request, Get Multiple Quotes
+      ol.list-unstyled
+        li
+          span.iconfont.icon-question
+          div Telling us buying need
+        li
+          span.iconfont.icon-arrow-right
+        li
+          span.iconfont.icon-message
+          div Receive quotations
+        li
+          span.iconfont.icon-arrow-right
+        li
+          span.iconfont.icon-handshake
+          div Deal with supplier
+      router-link.btn.btn-highlight(to="/") Post Souring Request
 </template>
 <script>
   import MicHeader from './MicHeader'
@@ -101,12 +116,41 @@
         font-size $common-size
         text-align center
         color $primary-color
-        display -webkit-box
-        white-space pre-wrap
-        word-wrap break-word
-        overflow hidden
-        text-overflow ellipsis
-        -webkit-line-clamp 2
-        -webkit-box-orient vertical
-        -webkit-box-pack center
+        line-clamp 2
+
+  .request
+    text-align center
+    margin-top 10px
+    margin-bottom 10px
+    padding 10px 15px 20px
+    background-color $back-light-color
+
+    > h5
+      font-size $primary-size
+      color $active-link-color
+
+    > ol > li
+      display inline-block
+      width 30%
+      vertical-align middle
+      color $icon-color
+
+      :global(.iconfont)
+        font-size 36px
+
+        + :last-child
+          margin-top 2px
+          line-clamp 2
+
+      &:nth-child(2n)
+        width 5%
+
+        :global(.iconfont)
+          font-size 20px
+
+    > :global(.btn)
+      margin-top 20px
+      padding 8px 24px
+      font-size $primary-size
+      border-radius 5px
 </style>

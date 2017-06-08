@@ -155,8 +155,8 @@
       },
       toggleControlIndex(index) {
         if (this.index === index) return
-        clearTimeout(this.autoTimeout);
-        this.transition = true;
+        clearTimeout(this.autoTimeout)
+        this.transition = true
         this.index = index
       }
     }
