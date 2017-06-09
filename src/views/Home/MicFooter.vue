@@ -24,7 +24,7 @@
 <style lang="stylus" module>
   .footer
     margin-top 25px
-    margin-bottom 25px
+    padding-bottom 25px
 
   .links
     + .links
