@@ -48,7 +48,7 @@
           li
             span.iconfont.icon-wheel(:style="{backgroundColor: '#29a8e1'}")
             div Auto, Motorcycle Parts & Accessories
-    div(:class="$style.request")
+    .light-bg(:class="$style.request")
       h5 Post One Request, Get Multiple Quotes
       ol.list-unstyled
         li
@@ -65,6 +65,29 @@
           span.iconfont.icon-handshake
           div Deal with supplier
       router-link.btn.btn-highlight(to="/") Post Souring Request
+    .light-bg(:class="$style.business")
+      h4 Startup New Business by
+      div(:class="$style.businessItemsContainer")
+        div(:class="$style.businessItems")
+          div(:class="$style.businessItem")
+            router-link(to="/start-up/?startupType=mp")
+              h5 Most Popular in your country
+              img(src="https://www.micstatic.com/mt/img/business/mostpopular/2.jpg")
+          div(:class="$style.businessItem")
+            router-link(to="/start-up/?startupType=lm")
+              h5 Low MOQ quick start
+              img(src="https://www.micstatic.com/mt/img/business/lowmoq/2.jpg")
+            router-link(to="/start-up/?startupType=mc")
+              h5 Most collect by visitors
+              img(src="https://www.micstatic.com/mt/img/business/mostcollect/2.jpg")
+    .light-bg(:class="$style.like")
+      h4 Product You May Like
+      ul.list-unstyled(:class="$style.products")
+        li(v-for="i of 10")
+          router-link(to="/product/Automatic-Plastic-Screw-Loader-Machine-686102772.html")
+            div(:class="$style.imgWrapper")
+              img.img-full(src="https://image.made-in-china.com/43f34j00ejdEykUFwAcf/Indoor-Advertising-Full-Color-LED-Display-Screen.jpg")
+            div Automatic Plastic Screw Loader Machine
 </template>
 <script>
   import MicHeader from './MicHeader'
@@ -74,10 +97,7 @@
 
   export default {
     name: 'home',
-    async asyncData({store}) {
-      await store.dispatch('fetchUser')
-      await store.dispatch('fetchBanners')
-    },
+    asyncData: ({store}) => Promise.all([store.dispatch('fetchUser'), store.dispatch('fetchBanners')]),
     computed: {
       ...mapGetters(['banners'])
     },
@@ -123,7 +143,6 @@
     margin-top 10px
     margin-bottom 10px
     padding 10px 15px 20px
-    background-color $back-light-color
 
     > h5
       font-size $primary-size
@@ -153,4 +172,94 @@
       padding 8px 24px
       font-size $primary-size
       border-radius 5px
+
+  .business
+    padding 10px 0 20px
+
+    > h4
+      margin-left 15px
+
+  .business-items-container
+    relative()
+    padding-top 70%
+
+  .business-items
+    absolute(top bottom)
+    left 10px
+    right 10px
+
+  .business-item
+    display inline-block
+    width 50%
+    height 100%
+    overflow hidden
+
+    > a
+      relative()
+      display block
+      padding 5px 15px 10px
+      height 100%
+      background-color #ecede6
+
+      > h5
+        font-size 15px
+
+      > img
+        absolute(left bottom)
+        width 100%
+
+    &:last-child
+      padding-left 3px
+
+      > a
+        height 50%
+
+        > img
+          width 50%
+          left auto
+          right 10px
+          bottom 10px
+
+        &:first-child
+          background-color #e0edf8
+
+        &:last-child
+          background-color #e4edf3
+          margin-top 3px
+
+  .like > h4
+    margin-top 0
+    margin-left 15px
+
+  .products
+    border-top 1px solid $border-color
+
+    > li
+      display inline-block
+      width 50%
+      padding 10px 10px 20px
+      border-bottom 1px solid $border-color
+      border-right 1px solid $border-color
+
+      &:nth-child(2n)
+        border-right-width 0
+
+      @media only screen and (min-width: $threshold)
+        width 25%
+
+        &:nth-child(4n + 2)
+          border-right-width 1px
+
+      .img-wrapper
+        relative()
+        padding-top 100%
+
+      img
+        absolute(top right bottom left)
+        margin-left auto
+        margin-right auto
+
+        + div
+          margin 0 5px
+          line-clamp(2)
 </style>
