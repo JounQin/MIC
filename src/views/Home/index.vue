@@ -68,18 +68,18 @@
     .light-bg(:class="$style.business")
       h4 Startup New Business by
       div(:class="$style.businessItemsContainer")
-        div(:class="$style.businessItems")
+        .clearfix(:class="$style.businessItems")
           div(:class="$style.businessItem")
             router-link(to="https://m.made-in-china.com/start-up/?startupType=mp")
               h5 Most Popular in your country
-              img(v-lazy="recommendations.mostPopular")
+              img(:src="recommendations.mostPopular")
           div(:class="$style.businessItem")
             router-link(to="https://m.made-in-china.com/start-up/?startupType=lm")
               h5 Low MOQ quick start
-              img(v-lazy="recommendations.lowMoq")
+              img(:src="recommendations.lowMoq")
             router-link(to="https://m.made-in-china.com/start-up/?startupType=mc")
               h5 Most collect by visitors
-              img(v-lazy="recommendations.mostCollect")
+              img(:src="recommendations.mostCollect")
     .light-bg(:class="$style.like")
       h4 Product You May Like
       ul.clearfix.list-unstyled.border-t(:class="$style.products")
@@ -200,6 +200,7 @@
     width 50%
     height 100%
     overflow hidden
+    float left
 
     > a
       relative()
@@ -269,6 +270,6 @@
 
     + div
       margin 20px 5px 0
-      min-height 32px
+      height 32px
       line-clamp 2
 </style>
