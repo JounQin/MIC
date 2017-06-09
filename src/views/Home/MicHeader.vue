@@ -188,6 +188,7 @@
       padding 7px 10px
       background-color transparent
       vertical-align middle
+      line-height 1.5
 
     > span
       display table-cell
