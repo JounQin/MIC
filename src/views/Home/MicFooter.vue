@@ -54,4 +54,5 @@
     scaleSize($smaller-size,, translate3d(-50%, 0, 0))
     width (14 / 12 * 100) %
     color $icon-color
+    white-space nowrap
 </style>
