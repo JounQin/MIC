@@ -3,6 +3,7 @@
     nav(:class="{active: searchActive}")
       router-link(to="/", :class="$style.logo")
         img(src="~assets/logo.png", :srcset="`${require('assets/logo@2x.png')} 2x`" alt="Made-in-China.com logo")
+        | Made-in-China.com
       .pull-right(:class="$style.operations")
         a.iconfont.icon-download(href="//service.made-in-china.com/bulletin/function/4992.htm" target="_blank")
         span.iconfont.icon-menu(:class="{active: unreadMsg}", @click.stop="menuActive = !menuActive")
@@ -21,7 +22,7 @@
                 li
                   router-link.iconfont.icon-message(:class="{active: unreadMsg}", to="/messages") Messages
                 li
-                  router-link.iconfont.icon-target(to="/quotations") Quotations
+                  router-link.iconfont.icon-target(:class="{active: unreadQuotation}", to="/quotations") Quotations
                 li
                   router-link.iconfont.icon-star(to="/favourites") Favourites
                 li
@@ -78,7 +79,7 @@
       }
     },
     computed: {
-      ...mapGetters(['userId', 'userName', 'unreadMsg'])
+      ...mapGetters(['userId', 'userName', 'unreadMsg', 'unreadQuotation'])
     },
     watch: {
       searchActive(searchActive) {

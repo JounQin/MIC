@@ -3,8 +3,8 @@
     mic-header
     hi-swiper(:class="$style.banners", :infinity="true", :autoInterval="2000", controlType="line")
       li(v-for="{link, img} of banners")
-        router-link(:to="link")
-          img.img-full(:src="img | imgPath")
+        router-link(:to="'https://m.made-in-china.com/special/' + link")
+          img.img-full(:src="img + '/made-in-china.jpg' | imgPath")
     hi-swiper.light-bg( :infinity="true", controlType="point")
       li
         ul.list-unstyled.clearfix(:class="$style.categories")
@@ -70,40 +70,47 @@
       div(:class="$style.businessItemsContainer")
         div(:class="$style.businessItems")
           div(:class="$style.businessItem")
-            router-link(to="/start-up/?startupType=mp")
+            router-link(to="https://m.made-in-china.com/start-up/?startupType=mp")
               h5 Most Popular in your country
-              img(src="https://www.micstatic.com/mt/img/business/mostpopular/2.jpg")
+              img(:src="recommendations.mostPopular")
           div(:class="$style.businessItem")
-            router-link(to="/start-up/?startupType=lm")
+            router-link(to="https://m.made-in-china.com/start-up/?startupType=lm")
               h5 Low MOQ quick start
-              img(src="https://www.micstatic.com/mt/img/business/lowmoq/2.jpg")
-            router-link(to="/start-up/?startupType=mc")
+              img(:src="recommendations.lowMoq")
+            router-link(to="https://m.made-in-china.com/start-up/?startupType=mc")
               h5 Most collect by visitors
-              img(src="https://www.micstatic.com/mt/img/business/mostcollect/2.jpg")
+              img(:src="recommendations.mostCollect")
     .light-bg(:class="$style.like")
       h4 Product You May Like
-      ul.list-unstyled(:class="$style.products")
-        li(v-for="i of 10")
-          router-link(to="/product/Automatic-Plastic-Screw-Loader-Machine-686102772.html")
+      ul.clearfix.list-unstyled.border-t(:class="$style.products")
+        li(v-for="{link, img, title} of recommendations.products")
+          router-link(:to="`https://m.made-in-china.com/product/${link}.html`")
             div(:class="$style.imgWrapper")
-              img.img-full(src="https://image.made-in-china.com/43f34j00ejdEykUFwAcf/Indoor-Advertising-Full-Color-LED-Display-Screen.jpg")
-            div Automatic Plastic Screw Loader Machine
+              img.img-full(:src="`https://image.made-in-china.com/${img}.jpg`")
+            div {{ title }}
+    mic-footer
 </template>
 <script>
   import MicHeader from './MicHeader'
   import HiSwiper from 'components/HiSwiper'
+  import MicFooter from './MicFooter'
 
   import {mapGetters} from 'vuex'
 
   export default {
     name: 'home',
-    asyncData: ({store}) => Promise.all([store.dispatch('fetchUser'), store.dispatch('fetchBanners')]),
+    asyncData: ({store}) => Promise.all([
+      store.dispatch('fetchUser'),
+      store.dispatch('fetchBanners'),
+      store.dispatch('fetchRecommendations')
+    ]),
     computed: {
-      ...mapGetters(['banners'])
+      ...mapGetters(['banners', 'recommendations'])
     },
     components: {
       MicHeader,
-      HiSwiper
+      HiSwiper,
+      MicFooter
     }
   }
 </script>
@@ -231,35 +238,37 @@
     margin-top 0
     margin-left 15px
 
-  .products
-    border-top 1px solid $border-color
+  .products > li
+    relative()
+    display inline-block
+    width 50%
+    padding 10px 10px 20px
+    border1px-b()
+    float left
 
-    > li
-      display inline-block
-      width 50%
-      padding 10px 10px 20px
-      border-bottom 1px solid $border-color
-      border-right 1px solid $border-color
+    &:nth-child(2n + 1):before
+      absolute(top right bottom left)
+      content ''
+      border1px-r()
 
-      &:nth-child(2n)
-        border-right-width 0
+    @media only screen and (min-width: $threshold)
+      width 25%
 
-      @media only screen and (min-width: $threshold)
-        width 25%
-
-        &:nth-child(4n + 2)
-          border-right-width 1px
-
-      .img-wrapper
-        relative()
-        padding-top 100%
-
-      img
+      &:nth-child(4n + 2):before
         absolute(top right bottom left)
-        margin-left auto
-        margin-right auto
+        content ''
+        border1px-r()
 
-        + div
-          margin 0 5px
-          line-clamp(2)
+    img
+      absolute(top right bottom left)
+      margin auto
+
+  .img-wrapper
+    relative()
+    padding-top 100%
+
+    + div
+      margin 20px 5px 0
+      min-height 32px
+      line-clamp 2
 </style>

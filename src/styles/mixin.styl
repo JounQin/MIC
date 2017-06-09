@@ -94,7 +94,7 @@ border1px-t(borderColor = $border-color)
   border-top 1px solid borderColor
 
   @media (min-resolution 2dppx)
-    border-top-color transparent
+    border-top-width 0
     background-position left top
     background-image borderLine(top, borderColor)
     @extend $border1px-tb
@@ -103,7 +103,7 @@ border1px-b(borderColor = $border-color)
   border-bottom 1px solid borderColor
 
   @media (min-resolution 2dppx)
-    border-bottom-color transparent
+    border-bottom-width 0
     background-position left bottom
     background-image borderLine(bottom, borderColor)
     @extend $border1px-tb
@@ -114,8 +114,8 @@ border1px-tb(borderColor = $border-color)
   background-image none
 
   @media (min-resolution 2dppx)
-    border-top-color transparent
-    border-bottom-color transparent
+    border-top-width 0
+    border-bottom-width 0
     background-image borderLine(top, borderColor), borderLine(bottom, borderColor)
     background-position top, bottom
     @extend $border1px-tb
@@ -128,7 +128,7 @@ border1px-l(borderColor = $border-color)
   border-left 1px solid borderColor
 
   @media (min-resolution 2dppx)
-    border-left-color transparent
+    border-left-width 0
     background-position left top
     background-image borderLine(left, borderColor)
     @extend $border1px-lr
@@ -137,7 +137,7 @@ border1px-r(borderColor = $border-color)
   border-right 1px solid borderColor
 
   @media (min-resolution 2dppx)
-    border-right-color transparent
+    border-right-width 0
     background-position right top
     background-image borderLine(right, borderColor)
     @extend $border1px-lr

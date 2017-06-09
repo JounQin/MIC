@@ -6,7 +6,8 @@ export default axios => {
   const state = {
     userName: null,
     userId: null,
-    unreadMsg: false
+    unreadMsg: false,
+    unreadQuotation: false
   }
   const getters = generateGetters(Object.keys(state))
   const actions = {
