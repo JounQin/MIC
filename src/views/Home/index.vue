@@ -72,14 +72,14 @@
           div(:class="$style.businessItem")
             router-link(to="https://m.made-in-china.com/start-up/?startupType=mp")
               h5 Most Popular in your country
-              img(:src="recommendations.mostPopular")
+              img(v-lazy="recommendations.mostPopular")
           div(:class="$style.businessItem")
             router-link(to="https://m.made-in-china.com/start-up/?startupType=lm")
               h5 Low MOQ quick start
-              img(:src="recommendations.lowMoq")
+              img(v-lazy="recommendations.lowMoq")
             router-link(to="https://m.made-in-china.com/start-up/?startupType=mc")
               h5 Most collect by visitors
-              img(:src="recommendations.mostCollect")
+              img(v-lazy="recommendations.mostCollect")
     .light-bg(:class="$style.like")
       h4 Product You May Like
       ul.clearfix.list-unstyled.border-t(:class="$style.products")
