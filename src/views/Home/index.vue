@@ -86,7 +86,7 @@
         li(v-for="{link, img, title} of recommendations.products")
           router-link(:to="`https://m.made-in-china.com/product/${link}.html`")
             div(:class="$style.imgWrapper")
-              img.img-full(:src="`https://image.made-in-china.com/${img}.jpg`")
+              img.img-full(v-lazy="`https://image.made-in-china.com/${img}.jpg`")
             div {{ title }}
     mic-footer
 </template>
