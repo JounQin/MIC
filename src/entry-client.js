@@ -26,14 +26,14 @@ if (__PROD__) require('vconsole')
 
 const {documentElement: docEl} = document
 
-const resize = () => {
-  store.dispatch('setSize', {winHeight: docEl.clientHeight, winWidth: docEl.clientWidth})
+const setSize = () => store.dispatch('setSize', {winHeight: docEl.clientHeight, winWidth: docEl.clientWidth})
+
+on(window, 'resize', throttle(() => {
+  setSize()
   docEl.style.fontSize = store.getters.fontSize + 'px'
-}
+}, 300))
 
-on(window, 'resize', throttle(resize, 300))
-
-resize()
+setSize()
 
 router.onReady(() => {
   router.beforeResolve(async (to, from, next) => {

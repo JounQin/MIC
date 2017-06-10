@@ -10,6 +10,12 @@ html(lang="zh-cmn-Hans-CN")
     | {{{ renderResourceHints() }}}
     | {{{ renderStyles() }}}
   body
+    script.
+      (function () {
+        var docEl = document.documentElement
+        var clientWidth = docEl.clientWidth
+        docEl.style.fontSize = (clientWidth < 768 ? clientWidth : 375) / 375 * 16 + 'px'
+      })()
     //vue-ssr-outlet
     | {{{ renderState() }}}
     if polyfill

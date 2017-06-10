@@ -11,6 +11,7 @@ import mkdirp from 'mkdirp'
 import pug from 'pug'
 import re from 'path-to-regexp'
 import _debug from 'debug'
+import {minify} from 'html-minifier'
 
 import router from './router'
 import intercept from './intercept'
@@ -21,9 +22,11 @@ const {__DEV__} = globals
 
 const debug = _debug('hi:server')
 
-const template = pug.renderFile(paths.server('template.pug'), {
-  pretty: !config.minimize,
-  polyfill: !__DEV__
+const tpl = pug.renderFile(paths.server('template.pug'), {polyfill: !__DEV__})
+
+const template = __DEV__ ? tpl : minify(tpl, {
+  collapseWhitespace: true,
+  minifyJS: true
 })
 
 const app = new Koa()
