@@ -5,7 +5,7 @@
       li(v-for="{link, img} of banners")
         router-link(:to="'https://m.made-in-china.com/special/' + link")
           img.img-full(:src="img + '/made-in-china.jpg' | imgPath")
-    hi-swiper.light-bg( :infinity="true", controlType="point")
+    hi-swiper.light-bg(controlType="point")
       li
         ul.list-unstyled.clearfix(:class="$style.categories")
           li
@@ -13,6 +13,9 @@
             div All Categories
           li
             span.iconfont.icon-package(:style="{backgroundColor: '#f3aa28'}")
+            div(:class="$style.special") Packaging
+              br
+              | & Printing
             div Packaging & Printing
           li
             span.iconfont.icon-pot(:style="{backgroundColor: '#7ace57'}")
@@ -81,7 +84,7 @@
               h5 Most collect by visitors
               img(:src="recommendations.mostCollect")
     .light-bg(:class="$style.like")
-      h4 Product You May Like
+      h4 Products You May Like
       ul.clearfix.list-unstyled.border-t(:class="$style.products")
         li(v-for="{link, img, title} of recommendations.products")
           router-link(:to="`https://m.made-in-china.com/product/${link}.html`")
@@ -136,7 +139,7 @@
         color $reverse-color
         font-size 24px
 
-      + div
+      ~ div
         scaleSize($smaller-size)
         margin-bottom 7px
         height 32px
@@ -144,6 +147,16 @@
         text-align center
         color $primary-color
         line-clamp 2
+
+        &.special
+          + div
+            display none
+
+          @media (min-width $threshold)
+            display none
+
+            + div
+              display -webkit-box
 
   .request
     text-align center
@@ -252,7 +265,7 @@
       content ''
       border1px-r()
 
-    @media only screen and (min-width: $threshold)
+    @media (min-width $threshold)
       width 25%
 
       &:nth-child(4n + 2):before
