@@ -22,12 +22,15 @@ const {__DEV__} = globals
 
 const debug = _debug('hi:server')
 
-const tpl = pug.renderFile(paths.server('template.pug'), {polyfill: !__DEV__})
+const tpl = pug.renderFile(paths.server('template.pug'), {
+  pretty: !config.minimize,
+  polyfill: !__DEV__
+})
 
-const template = __DEV__ ? tpl : minify(tpl, {
+const template = config.minimize ? minify(tpl, {
   collapseWhitespace: true,
   minifyJS: true
-})
+}) : tpl
 
 const app = new Koa()
 
@@ -130,7 +133,9 @@ app.use(async (ctx, next) => {
     ctx.body = stream.resume()
     generateStatic && stream.on('data', data => (html += data))
   } catch (e) {
-    if (e.status === 404) {
+    if (e.url) {
+      ctx.redirect(e.url)
+    } else if (e.status === 404) {
       ctx.body = '404 | Page Not Found'
     } else {
       ctx.status = 500
@@ -171,7 +176,4 @@ const {serverHost, serverPort} = config
 
 const args = [serverPort, serverHost]
 
-const server = app.listen(...args, err => {
-  server.keepAliveTimeout = 0
-  debug(...err ? [err] : ['Server is now running at %s:%s.', ...args.reverse()])
-})
+app.listen(...args, err => debug(...err ? [err] : ['Server is now running at %s:%s.', ...args.reverse()]))
