@@ -9,7 +9,7 @@
         span Privacy
       router-link(to="/contact")
         span Contact
-    div(:class="$style.links")
+    div(:class="[$style.links, $style.hot]")
       router-link(to="/about")
         span Hot Products
       router-link(to="/privacy")
@@ -27,7 +27,7 @@
     padding-bottom 25px
 
   .links
-    + .links
+    &.hot
       margin-top 10px
 
       a
