@@ -197,7 +197,7 @@ function init(el, {value, modifiers: {prevent, stop}}) {
     }
 
     // fix Android does't not emit touchmove event when touchstart doesn't preventDefault
-    e = actualEvent(e, isMouseDown ? prevent : true, stop).event
+    e = actualEvent(e, isMouseDown ? prevent : /Android 4\./.test(navigator.userAgent) || prevent, stop).event
 
     Object.assign(el, {
       _clientX: e.clientX,
